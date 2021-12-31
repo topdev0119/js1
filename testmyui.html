@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    
+    <script>
+        document.write("<script src='boot.js?rnd=" + Math.random() + "'></s" + "cript>")
+        document.write("<link href='CSS/MainUI.css?rnd=" + Math.random() + "'rel='stylesheet' type='text/css' />")
+    </script>
+
+</head>
+
+<body>
+    <input type="button" class="button" onclick="add()" value="增加行">
+    <input type="button" class="button" onclick="GetTableValue('test')" value="获取值">
+    <input type="button" class="button" onclick="shuaxin()" value="查询">
+    <input type="button" class="button" onclick="posttest()" value="测试POST">
+    <input type="button" class="button" onclick="GetSelectRow('test')" value="获取选中行">
+    <input type="button" class="button" onclick="destroy()" value="发送ajax异步">
+    <input type="button" class="button" onclick="myConfirm()" value="myConfirm">
+    <input type="button" class="button" onclick="show()" value="SHOW"><br />
+    <!--<input type="text" class="autocomplete" id="autocomplete" valueFiled="CD_PROJECT_CODE" textFiled="CD_PROJECT_NAME" url="MaterialApproval/MaterialHandler.ashx?method=GetItem">
+    <input type="text" class="search" id="search" />
+    <select name="place" valueFiled="CD_PROJECT_CODE" textFiled="CD_PROJECT_NAME" url="MaterialApproval/MaterialHandler.ashx?method=GetItem"></select>-->
+    <input type="text" id="MaterialInfo" class="tdinputText" nulltip="整机名称+系列" />
+    <div style="width:100%;height:400px;overflow-x:scroll;overflow-y:hidden">
+    <table style="width: 2700px;"  id="test" class="tableblue" showpager=true  pageprompt="mytest"  PageList="[10,15,20]" PageSize="20" ondblclick="TabledDoubleClick(this)" url="MaterialApproval/MaterialHandler.ashx?method=Test">
+        <tr>
+            <th id="index" rowspan="2" frozen="true">序号</th>
+            <th id="checkbox" rowspan="2">选择</th>
+            <th colspan="3">部门</th>
+            <th id="CREATIONDATE" width="200px" rowspan="2">创建日期<input type="text" /></th>
+            <th id="action" rowspan="2">操作<a href="#" onclick="Remove(this)">删除</a></th>
+        </tr>
+        <tr>
+            <th id="DepartID">部门ID</th>
+            <th id="DeptName" width="400px">部门名称</th>
+            <th id="NotesCode" width="100px">NoteID<input type="text" /></th>
+        </tr>
+    </table>
+</div>
+    <div id="mytest" class="pager">
+        <span style="margin-right: 15%">总计: &nbsp;&nbsp;需求数量<span id="Requireds" style="margin-left: 2px;">0</span>
+        &nbsp;&nbsp;审批数量<span id="RequiredsAudit" style="margin-left: 2px;">0</span>
+        &nbsp;&nbsp;总金额<span id="Totalmoney" style="margin-left: 2px;">0</span>
+        &nbsp;&nbsp;审批后金额<span id="TotalmoneyAudit" style="margin-left: 2px;">0</span>
+        </span>
+    </div>
+    <div id="win" style="display: none">
+        <table width="100%">
+            <tr>
+                <td style="padding-left:15px;width:25%">
+                    评审意见
+                </td>
+                <td>
+                    <textarea id="Dept2ManagerNote" style="width: 95%; height: 150px"></textarea>
+                </td>
+            </tr>
+        </table>
+        <div style="text-align: center">
+            <button class="alertbutton" onclick="SubmitPL('同意')">同意</button>
+            <button class="alertbuttoncancel" onclick="SubmitPL('不同意')">不同意</button>
+        </div>
+    </div>
+    <script>
+        
+        InitUI();
+        Frozen("test", "left");
+        function add() {
+            AddNewRow('test')
+        }
+        function shuaxin() {
+            var jsonObj = { "name": "张三", "age": "24", "profession": "工程师" };
+            load("test");
+        }
+        function posttest() {
+            var data = GetTableValue("test");
+            var ret = Ajax("MaterialApproval/MaterialHandler.ashx?method=Test2", "POST", data)
+            console.log(ret);
+        }
+        function inputsearch() {
+            console.log(this.id);
+            OpenWin("test.html", "380px", "450px", "选择相关项目", function (action) {
+
+                if (action == "ok") {
+                    //var data = window.frames["MyIFrame"].GetData();
+                    var data = MySelectData;
+                    console.log(data);
+                    if (data) {
+                        console.log(data.name);
+                        document.getElementById("search").value = data.name;
+                    }
+                }
+            })
+        }
+        function destroy() {
+            Ajax("MaterialApproval/MaterialHandler.ashx?method=Test", "GET", "", function (data) {
+                console.log(data)
+            })
+        }
+        function myConfirm() {
+            UIConfirm2("测测测测测测", "确认", "审批不通过", function (action) { alert(action) }, function (action) { console.log(action) })
+        }
+        function show() {
+            ShowWin($("#win"),"400px","250px","批量审核")
+        }
+        function SubmitPL(sss) {
+            console.log(sss);
+            console.log($("#Dept2ManagerNote").value)
+            closeWindow("cancel");
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <input type="button" onclick="aa()" value="张三">
+    <input type="button" onclick="bb()" value="李四">
+    <script>
+        function aa() {
+            var jsonObj = { "name": "张三", "age": "24", "profession": "工程师" };
+            parent.MySelectData = jsonObj;
+            parent.closeWindow("ok")
+        }
+         function bb() {
+            var jsonObj = { "name": "李四", "age": "24", "profession": "工程师" };
+            parent.MySelectData = jsonObj;
+            parent.closeWindow("ok")
+        }
+
+    </script>
+</body>
+</html>
